@@ -16,5 +16,7 @@ namespace Binary_Search_Tree_Generics
         public BinaryTreeNode<T> Left { get; set; }
         public BinaryTreeNode<T> Right { get; set; }
 
+
+
     }
 }
