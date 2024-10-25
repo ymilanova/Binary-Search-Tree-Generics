@@ -28,18 +28,18 @@ namespace Binary_Search_Tree_Generics
             else
             {
                 BinaryTreeNode<T> nextNode = _root;
-                BinaryTreeNode<T> breach = null;
+                BinaryTreeNode<T> prev = null;
                 bool exiter = false;
 
                 while (!exiter)
                 {
-                    breach = nextNode;
+                    prev = nextNode;
                     if (value.CompareTo(nextNode.Data) < 0)
                     {
                         nextNode = nextNode.Left;
                         if (nextNode == null)
                         {
-                            breach.Left = temp;
+                            prev.Left = temp;
                             exiter = true;
                         }
                     }
@@ -48,13 +48,12 @@ namespace Binary_Search_Tree_Generics
                         nextNode = nextNode.Right;
                         if (nextNode == null)
                         {
-                            breach.Right = temp;
+                            prev.Right = temp;
                             exiter = true;
                         }
 
-
-
                     }
+
                 }
             }
 
@@ -62,24 +61,91 @@ namespace Binary_Search_Tree_Generics
 
         public void Delete(T value)
         {
-            List<T> elements = new List<T>();
-            InOrderCollect(_root, elements, value);
-            _root = null;
-            foreach (T element in elements)
+
+            BinaryTreeNode<T> node = _root;
+            BinaryTreeNode<T> previous = null;
+
+            while (node != null) 
             {
-                Insert(element);
+                
+                if (node.Data.CompareTo(value) > 0)
+                {
+                    previous = node;
+                    node = node.Left;
+                }
+                else if (node.Data.CompareTo(value) < 0) 
+                {
+                    previous = node;
+                    node = node.Right;
+                }
+                else 
+                {
+                    if (node.Left != null && node.Right != null) 
+                    {
+                        BinaryTreeNode<T> nodeNext = node.Left;
+                        BinaryTreeNode<T> nodePrev = node;
+
+                        while (nodeNext.Right != null) 
+                        {
+                            nodePrev = nodeNext;
+                            nodeNext = nodeNext.Right;
+
+                        }
+                        nodePrev.Right = null;
+                        node.Data = nodeNext.Data;
+                        return;
+
+                    }
+                    else if (node.Left != null || node.Right != null)
+                    {
+                     
+
+                        if (node.Left != null)
+                        {
+                            node = node.Left;
+                            previous.Left = node;
+                            node = null;
+                            return;
+
+
+                        }
+                        else
+                        {
+                            
+                            node = node.Right;
+                            previous.Right = node;
+                            node = null;
+                            return;
+                        }
+
+                    }
+                    else
+                    {
+                        if (previous.Data.CompareTo(node.Data) > 0)
+                        {
+                            previous.Left = null;
+                            node = null;
+                            return;
+                        }
+                        else 
+                        {
+                            previous.Right = null;
+                            node = null;
+                            return;
+
+                        }
+                        
+
+                       
+                    }
+
+                }
+                
+
             }
+
         }
-        private void InOrderCollect(BinaryTreeNode<T> node, List<T> elements, T value)
-        {
-            if (node == null) return;
-            InOrderCollect(node.Left, elements, value);
-            if (!node.Data.Equals(value))
-            {
-                elements.Add(node.Data);
-            }
-            InOrderCollect(node.Right, elements, value);
-        }
+        
 
 
         public bool Contains(T value)
@@ -127,44 +193,7 @@ namespace Binary_Search_Tree_Generics
 
         public void PrintInorder()
         {
-            if (_root == null) ;
-            else
-            {
-                BinaryTreeNode<T> prevoius;
-                BinaryTreeNode<T> node = _root;
-
-                while (node != null)
-                {
-                    if (node.Left == null)
-                    {
-                        Console.WriteLine(node.Data);
-                        node = node.Right;
-                    }
-                    else
-                    {
-                        prevoius = node.Left;
-                        while (prevoius.Right != null && prevoius.Right != node)
-                        {
-                            prevoius = prevoius.Right;
-
-
-                        }
-                        if (prevoius.Right == null)
-                        {
-                            prevoius.Right = node;
-                            node = node.Left;
-                        }
-                        else
-                        {
-                            prevoius.Right = null;
-                            Console.WriteLine(node.Data);
-                            node = node.Right;
-
-                        }
-
-                    }
-                }
-            }
+            throw new NotImplementedException();
         }
     }
 }
